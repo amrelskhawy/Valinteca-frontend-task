@@ -17,6 +17,8 @@ const SignUp = () => {
 		password_confirmation: ''
 	})
 
+	localStorage.clear()
+
 	const navigate = useNavigate();
 	const handleChange = (e) => {
 		const { name, value } = e.target
@@ -57,22 +59,26 @@ const SignUp = () => {
 
 		// Validating Username Input 
 		const { username, password, password_confirmation, email } = formData
+		
+		const valid = 4
 
 		if (!isValidUserName(username)) {
 			setError("Username doesn't meet out requirments")
-
+			
 		} else if (!isValidEmail(email)) {
 			setError("It's Not a Valid Email !")
 		}
 		else if (!password && !password_confirmation) {
 			setError("You Should Enter The Password")
-		}else if (!password > 8 ) {
+		}else if (password.length < 8 && password_confirmation.length < 8 ) {
 			setError("Password should be at least 8 characters")
 		}
 		
 		else if (password !== password_confirmation) {
 			setError("Passwords Should be Matched !!")
-		} else {
+		} 
+		
+		else {
 			setLoading(true)
 			postData('https://goldblv.com/api/hiring/tasks/register', formData)
 				.then((data) => {
