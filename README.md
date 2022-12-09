@@ -13,6 +13,7 @@ It's Task For Valinteca For Job Role : "Frontend Developer"
     3. home ('/home') => Must Be Authenticated
 
 
+
 ## Screenshots from the Application
 1. ![alt text](./src/assets/screenshots/welcome.png)
 2. ![alt text](./src/assets/screenshots/sign-up.png)
