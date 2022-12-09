@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Input from '../input/Input'
-import axios from 'axios'
 import './SignUp.scss'
 import { inputs } from '../../inputs'
+import Loading from '../Loading/Loading'
+import { useNavigate } from 'react-router-dom'
+
 
 
 const SignUp = () => {
 	const [error, setError] = useState("")
+	const [loading, setLoading] = useState(false)
 	const [formData, setFormData] = useState({
 		username: '',
 		email: '',
 		password: '',
 		password_confirmation: ''
 	})
+
+	const navigate = useNavigate();
 	const handleChange = (e) => {
 		const { name, value } = e.target
 		setError("")
@@ -28,26 +33,25 @@ const SignUp = () => {
 		async function postData(url = '', data = {}) {
 			// Default options are marked with *
 			const response = await fetch(url, {
-				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
-					// 'Content-Type': 'application/x-www-form-urlencoded',
 				},
-				
-				body: JSON.stringify(data) // body data type must match "Content-Type" header
-			});
-			return response // parses JSON response into native JavaScript objects
-		}
 
+				body: JSON.stringify(data)
+			});
+			return response
+		}
+		function isNumber(str) {
+			return /\d/.test(str);
+		}
 		function isValidUserName(username) {
-			let isValid = false
 			if (
-				username.substr(0, 1) != NaN &&
-				username.substr(-1, 1) != NaN
-				&& (username.length >= 5 && username.length <= 15)) {
-				isValid = true
+				(!isNumber(username.substr(0, 1))  && !isNumber(username.substr(-1, 1)))
+				&& username.length >= 5 && username.length <= 15) {
+				return  true
 			}
-			return isValid
+			return false
 		}
 
 
@@ -65,26 +69,27 @@ const SignUp = () => {
 		} else if (password !== password_confirmation) {
 			setError("Passwords Should be Matched !!")
 		} else {
-
-			const response = {}; 
+			setLoading(true)
 			postData('https://goldblv.com/api/hiring/tasks/register', formData)
 				.then((data) => {
 					console.log(data)
-					if ( data.statusText === "OK" &&
-					data.status===200 ) {
-						window.navigator('/authenticate')
-						
+					if (data.statusText === "OK" &&
+						data.status === 200) {
+
+						setLoading(false)
+						navigate("/home");
+						localStorage.setItem("username",
+						formData.username)
+						localStorage.setItem("email",
+						formData.email)
+
+					} else {
+						setLoading(false)
+						alert("Can't Regeister !!")
 					}
 				});
-
 				
-
 		}
-
-
-
-
-
 	}
 	return (
 		<div className='sign-up-container'>
@@ -107,6 +112,7 @@ const SignUp = () => {
 				</form>
 
 			</div>
+			{loading && <Loading />}
 		</div>
 	)
 }

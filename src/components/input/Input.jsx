@@ -1,13 +1,17 @@
 import React from 'react'
 import './input.scss'
-const Input = ({icon, ...otherProps}) => {
+
+
+const Input = ({ icon, ...otherProps }) => {
+
+
     return (
         <div className='input-field'>
             <span>
                 {icon}
             </span>
             <input
-            {...otherProps}
+                {...otherProps}
             />
         </div>
     )

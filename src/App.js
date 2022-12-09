@@ -1,6 +1,7 @@
 import {Routes ,Route } from 'react-router-dom';
 import './App.css';
 import SignUp from './components/signUp/SignUp';
+import Home from './pages/home/Home';
 import Welcome from './pages/welcome/Welcome';
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
           element={<Welcome />} />
         <Route path='sign-up' 
           element={<SignUp />} />
+        <Route path='home'
+          element={<Home />} />
       </Routes>
   );
 }
