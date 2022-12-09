@@ -66,7 +66,11 @@ const SignUp = () => {
 		}
 		else if (!password && !password_confirmation) {
 			setError("You Should Enter The Password")
-		} else if (password !== password_confirmation) {
+		}else if (!password > 8 ) {
+			setError("Password should be at least 8 characters")
+		}
+		
+		else if (password !== password_confirmation) {
 			setError("Passwords Should be Matched !!")
 		} else {
 			setLoading(true)
